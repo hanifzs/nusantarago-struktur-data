@@ -1,0 +1,7 @@
+*.bak
+.git
+.vercel
+node_modules
+presentation-assets
+*.pptx
+Naskah_Presentasi_Slide.md

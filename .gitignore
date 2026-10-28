@@ -1,0 +1,4 @@
+.vercel/
+*.bak
+presentation-assets/
+node_modules/

@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NusantaraGo — Tiket Pesawat, Hotel &amp; Perjalanan</title>
+  <meta name="description" content="Rencanakan perjalananmu bersama NusantaraGo. Cari tiket pesawat, hotel, kereta api, bus, dan aktivitas wisata dalam satu tempat.">
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons 6.5.1 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="travel.css?v=20261027">
+</head>
+<body>
+
+  <!-- ========================================================================= -->
+  <!-- NAVBAR UTAMA (KOMERSIAL ELEGAN - GAYA LOKET.COM & TRAVEL SUPER-APP) -->
+  <!-- ========================================================================= -->
+  <header class="app-header tiket-navbar" id="appHeader">
+    <!-- Top Utility Bar -->
+    <div class="tiket-top-utility-bar">
+      <div class="container top-utility-container">
+        <!-- Tagline / Trust Banner -->
+        <div class="top-util-left">
+          <span class="top-util-tagline">
+            <span data-i18n="top_tagline">Ada banyak cerita di setiap perjalanan.</span>
+          </span>
+        </div>
+
+        <!-- Right Side Utility: Promo, Tiket Saya, Language Dropdown, Auth -->
+        <div class="top-util-right">
+          <button type="button" class="top-util-link" id="btnShowAlgorithmLog"><i class="fa-solid fa-list-ol"></i> Log Algoritma</button>
+          <!-- Link Promo -->
+          <a href="#promoSection" class="top-util-link" id="navPromoLink">
+            <i class="fa-solid fa-tags text-amber"></i>
+            <span data-i18n="nav_promo">Promo &amp; Diskon</span>
+          </a>
+
+          <!-- Tiket Saya Button with Badge Count -->
+          <button class="top-util-link nav-orders-btn" data-view="orders" id="navTabOrders" title="Lihat E-Ticket & Riwayat Pesanan">
+            <i class="fa-solid fa-ticket text-primary"></i>
+            <span data-i18n="nav_my_tickets">Tiket Saya</span>
+            <span class="nav-badge" id="orderBadgeCount">0</span>
+          </button>
+
+          <!-- Language Selector Dropdown (ID / EN) -->
+          <div class="lang-switch-dropdown" id="langSwitchDropdown">
+            <button class="lang-switch-btn" id="btnLangToggle" type="button" aria-expanded="false" title="Pilih Bahasa / Select Language">
+              <span class="lang-flag" id="currentLangFlag">🇮🇩</span>
+              <span class="lang-code" id="currentLangCode">ID</span>
+              <i class="fa-solid fa-chevron-down lang-chevron"></i>
+            </button>
+            <div class="lang-dropdown-menu" id="langDropdownMenu">
+              <button type="button" class="lang-option-btn active" data-lang="ID" id="langOptId">
+                <span class="lang-flag">🇮🇩</span>
+                <span class="lang-label">ID &bull; Bahasa Indonesia</span>
+                <i class="fa-solid fa-check check-icon"></i>
+              </button>
+              <button type="button" class="lang-option-btn" data-lang="EN" id="langOptEn">
+                <span class="lang-flag">🇬🇧</span>
+                <span class="lang-label">EN &bull; English</span>
+                <i class="fa-solid fa-check check-icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Baris Navbar Utama -->
+    <div class="container navbar-content">
+      <div class="navbar-left">
+        <div class="brand-logo" id="brandLogo" role="button" tabindex="0" title="Kembali ke Beranda">
+          <div class="logo-icon-tiket">
+            <i class="fa-solid fa-ticket-simple"></i>
+            <span class="logo-dot-yellow"></span>
+          </div>
+          <div class="logo-text">
+            <span class="brand-name">Nusantara<span class="accent-text">Go</span></span>
+            <span class="brand-tagline" data-i18n="brand_subtitle">Teman perjalananmu</span>
+          </div>
+        </div>
+
+        <!-- Quick Search Bar in Navbar -->
+        <div class="nav-quick-search-wrap">
+          <i class="fa-solid fa-magnifying-glass search-nav-icon"></i>
+          <input type="text" id="navQuickSearch" aria-label="Cari perjalanan" placeholder="Mau ke mana?" autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Main Category & Page Navigation -->
+      <nav class="nav-links" id="mainNavLinks">
+        <button class="nav-tab-btn active" data-view="catalog" data-cat="ALL" id="navTabAll">
+          <i class="fa-solid fa-compass"></i>
+           <span data-i18n="nav_explore">Beranda</span>
+        </button>
+        <button class="nav-tab-btn" data-view="catalog" data-cat="PESAWAT">
+          <span data-i18n="pill_flights">Pesawat</span>
+        </button>
+        <button class="nav-tab-btn" data-view="catalog" data-cat="HOTEL">
+          <span data-i18n="pill_hotels">Hotel</span>
+        </button>
+        <button class="nav-tab-btn" data-view="catalog" data-cat="KERETA">
+          <span data-i18n="pill_trains">Kereta Api</span>
+        </button>
+        <button class="nav-tab-btn" data-view="catalog" data-cat="WISATA">
+          <span data-i18n="pill_activities">Wisata</span>
+        </button>
+      </nav>
+
+      <!-- Header Actions: Auth Buttons / User Profile -->
+      <div class="header-actions">
+        <!-- Auth Buttons (Login & Register) -->
+        <div class="nav-auth-buttons" id="navAuthContainer">
+          <button class="btn btn-tiket-login btn-sm" id="btnOpenLogin">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> <span data-i18n="btn_login">Masuk</span>
+          </button>
+          <button class="btn btn-tiket-register btn-sm" id="btnOpenRegister">
+            <span data-i18n="btn_register">Daftar</span>
+          </button>
+        </div>
+
+        <!-- User Profile Pill (Shown when logged in) -->
+        <div class="user-profile-pill" id="userProfilePill" style="display: none;">
+          <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+          <div class="user-info-text">
+            <span class="user-greeting-lbl" data-i18n="user_greeting">Halo,</span>
+            <span class="user-display-name" id="userDisplayName">Hanif</span>
+          </div>
+          <button class="btn-logout-mini" id="btnLogoutMini" title="Keluar / Logout"><i class="fa-solid fa-power-off"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 1: BERANDA & KATALOG EVENT KOMERSIAL -->
+  <!-- ========================================================================= -->
+  <div class="app-view active" id="viewCatalog">
+
+    <!-- Modern Hero Section (Loket.com + Travel Super-App) -->
+    <section class="tiket-hero-section">
+      <div class="tiket-hero-backdrop"></div>
+      <div class="container tiket-hero-container">
+
+        <!-- Hero Greetings Banner -->
+        <div class="tiket-hero-text">
+          <span class="tiket-hero-badge" data-i18n="hero_badge">SEBENTAR LAGI, JADI CERITA.</span>
+          <h1 class="tiket-hero-title" data-i18n="hero_title">Mau ke mana kali ini?</h1>
+          <p class="tiket-hero-subtitle" data-i18n="hero_subtitle">
+            Dari pulang kampung sampai liburan yang lama ditunggu. Mulai rencanakan di sini.
+          </p>
+        </div>
+
+        <!-- Floating Category Pills (Ala Loket.com & Travel Platform) -->
+        <div class="floating-category-pill-wrap">
+          <div class="floating-category-pill" id="categoryNav">
+            <button class="cat-pill-btn active" data-category="ALL" id="catBtnAll">
+              <i class="fa-solid fa-border-all cat-pill-icon"></i>
+              <span data-i18n="pill_all">Jelajahi</span>
+            </button>
+            <button class="cat-pill-btn" data-category="PESAWAT">
+              <i class="fa-solid fa-plane cat-pill-icon"></i>
+              <span data-i18n="pill_flights">Pesawat</span>
+            </button>
+            <button class="cat-pill-btn" data-category="HOTEL" id="catBtnHotel">
+              <i class="fa-solid fa-bed cat-pill-icon"></i>
+              <span data-i18n="pill_hotels">Hotel</span>
+            </button>
+            <button class="cat-pill-btn" data-category="KERETA">
+              <i class="fa-solid fa-train cat-pill-icon"></i>
+              <span data-i18n="pill_trains">Kereta Api</span>
+            </button>
+            <button class="cat-pill-btn" data-category="BUS">
+              <i class="fa-solid fa-bus cat-pill-icon"></i>
+              <span data-i18n="pill_buses">Bus &amp; Travel</span>
+            </button>
+            <button class="cat-pill-btn" data-category="WISATA">
+              <i class="fa-solid fa-umbrella-beach cat-pill-icon"></i>
+              <span data-i18n="pill_activities">Wisata</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Kartu Pencarian Utama (Hero White Search Card) -->
+        <div class="tiket-white-search-card">
+          <!-- Baris 1: Mode Filter / Info -->
+          <div class="search-trip-type-row">
+            <h2 class="search-card-title" data-i18n="search_heading">Perjalanan berikutnya mulai di sini</h2>
+            <div class="trip-category-indicator" id="tripCategoryIndicator">
+              <i class="fa-solid fa-layer-group text-primary"></i>
+              <span id="txtActiveCategory">Semua perjalanan</span>
+            </div>
+          </div>
+
+          <!-- Baris 2: Grid Input Pencarian Horizontal -->
+          <div class="search-main-fields-grid">
+            <!-- Box 1: Lokasi / Kota -->
+            <div class="search-cell-box">
+              <label for="filterOrigin" class="cell-head-lbl" id="originLabel">Kota / destinasi</label>
+              <input type="text" id="filterOrigin" placeholder="Pilih kota" list="travelCities">
+            </div>
+
+            <!-- Tombol Swap -->
+            <button type="button" class="btn-swap-locations" id="btnSwapLocations" title="Tukar Lokasi / Reset">
+              <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            </button>
+
+            <!-- Box 2: Kata Kunci Acara / Layanan -->
+            <div class="search-cell-box flex-grow-cell">
+              <label for="filterDestination" class="cell-head-lbl" id="destinationLabel">Nama hotel atau layanan</label>
+              <input type="text" id="filterDestination" placeholder="Cari hotel, maskapai, wisata...">
+            </div>
+
+            <!-- Box 3: Tanggal Pelaksanaan -->
+            <div class="search-cell-box date-cell">
+              <label for="filterDate" class="cell-head-lbl" data-i18n="date_label">Tanggal perjalanan</label>
+              <input type="date" id="filterDate">
+            </div>
+
+            <!-- Box 5: Pilihan Tiket / Kategori -->
+            <div class="search-cell-box class-cell">
+              <label for="filterClass" class="cell-head-lbl" data-i18n="pass_label">Jumlah pesanan</label>
+              <select id="filterClass" class="cell-class-select">
+                <option value="1">1 tiket / kamar</option>
+                <option value="2">2 tiket / kamar</option>
+                <option value="3">3 tiket / kamar</option>
+                <option value="4">4 tiket / kamar</option>
+              </select>
+            </div>
+
+            <!-- Tombol Aksi Cari Utama (Cari Tiket) -->
+            <div class="search-action-cell">
+              <button type="button" class="btn btn-tiket-search-action" id="btnTiketSearch">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span data-i18n="search_btn">Cari Tiket</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Baris 3: Strip Promo Info -->
+          <div class="search-bottom-promo-strip" id="searchPromoStrip" role="button" tabindex="0">
+            <div class="promo-strip-left">
+              <span class="promo-strip-icon"><i class="fa-solid fa-percent"></i></span>
+              <span class="promo-strip-text" data-i18n="promo_strip_text">
+                Lebih hemat dengan potongan hingga Rp200.000. <strong>Cek promo</strong>
+              </span>
+            </div>
+            <i class="fa-solid fa-arrow-right promo-strip-arrow"></i>
+          </div>
+
+          <!-- Riwayat Pencarian Terakhir (Array Cache) -->
+          <div class="search-history-container" id="searchHistoryContainer">
+            <div class="history-label">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+              <span data-i18n="history_label">Pencarian Terakhir:</span>
+            </div>
+            <div class="history-tags-wrap" id="historyTagsWrap">
+              <span class="history-empty text-muted">Belum ada riwayat pencarian.</span>
+            </div>
+            <button class="btn-clear-history" id="btnClearHistory" title="Hapus Riwayat Pencarian">
+              <i class="fa-solid fa-trash-can"></i> <span data-i18n="history_clear">Hapus</span>
+            </button>
+          </div>
+        </div>
+
+        <datalist id="travelCities"><option value="Jakarta"><option value="Bali"><option value="Surabaya"><option value="Bandung"><option value="Yogyakarta"><option value="Lombok"></datalist>
+      </div>
+    </section>
+
+    <!-- Section Promo & Kode Voucher Diskon -->
+    <section class="promo-section" id="promoSection">
+      <div class="container">
+        <div class="promo-header">
+          <div class="promo-title-wrap">
+            <span class="section-sub-badge"><i class="fa-solid fa-tags"></i> <span data-i18n="promo_sub_badge">Penawaran Eksklusif</span></span>
+            <h3 data-i18n="promo_sec_title">Jalan-jalan, lebih hemat</h3>
+          </div>
+          <span class="promo-hint-text"><i class="fa-solid fa-circle-info"></i> <span data-i18n="promo_hint_text">Klik "Salin Kode" untuk menggunakan potongan harga saat pemesanan</span></span>
+        </div>
+
+        <div class="promo-cards-grid" id="promoCardsGrid">
+          <!-- Rendered dynamically from promoCodesArray -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Destinasi & Kota Event Terpopuler -->
+    <section class="destinations-section" id="destinationsSection">
+      <div class="container">
+        <div class="destinations-header">
+          <div>
+            <span class="section-sub-badge"><i class="fa-solid fa-map-location-dot"></i> <span data-i18n="dest_sub_badge">Kota &amp; Hub Populer</span></span>
+            <h3 class="dest-section-title" data-i18n="dest_sec_title">Ke sini, yuk.</h3>
+          </div>
+          <span class="dest-hint-text" data-i18n="dest_hint_text">Inspirasi untuk liburan berikutnya</span>
+        </div>
+
+        <div class="destinations-grid" id="destinationsGrid">
+          <div class="destination-card" data-destination="Jakarta" role="button" tabindex="0">
+            <img src="https://images.unsplash.com/photo-1555899434-94d1368aa7af?w=500&auto=format&fit=crop" alt="Jakarta" loading="lazy">
+            <div class="dest-overlay">
+              <span class="dest-name">Jakarta</span>
+              <span class="dest-tag">Sisi lain ibu kota</span>
+            </div>
+          </div>
+          <div class="destination-card" data-destination="Surabaya" role="button" tabindex="0">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Central_Surabaya_view_taken_from_JW_Marriott_Surabaya.jpg/960px-Central_Surabaya_view_taken_from_JW_Marriott_Surabaya.jpg" alt="Pusat kota Surabaya" loading="lazy">
+            <div class="dest-overlay">
+              <span class="dest-name">Surabaya</span>
+              <span class="dest-tag">Kota penuh cerita</span>
+            </div>
+          </div>
+          <div class="destination-card" data-destination="Bali" role="button" tabindex="0">
+            <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=500&auto=format&fit=crop" alt="Bali" loading="lazy">
+            <div class="dest-overlay">
+              <span class="dest-name">Bali</span>
+              <span class="dest-tag">Waktunya ke pantai</span>
+            </div>
+          </div>
+          <div class="destination-card" data-destination="Bandung" role="button" tabindex="0">
+            <img src="https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?w=500&auto=format&fit=crop" alt="Bandung" loading="lazy">
+            <div class="dest-overlay">
+              <span class="dest-name">Bandung</span>
+              <span class="dest-tag">Udara sejuk, hati tenang</span>
+            </div>
+          </div>
+          <div class="destination-card" data-destination="Yogyakarta" role="button" tabindex="0">
+            <img src="https://images.unsplash.com/photo-1596402184320-417e7178b2cd?w=500&auto=format&fit=crop" alt="Yogyakarta" loading="lazy">
+            <div class="dest-overlay">
+              <span class="dest-name">Yogyakarta</span>
+              <span class="dest-tag"><i class="fa-solid fa-landmark"></i> Budaya, Seni &amp; Kuliner</span>
+            </div>
+          </div>
+          <div class="destination-card" data-destination="Lombok" role="button" tabindex="0">
+            <img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=500&auto=format&fit=crop" alt="Pantai Lombok" loading="lazy">
+            <div class="dest-overlay">
+              <span class="dest-name">Lombok</span>
+              <span class="dest-tag">Pelan-pelan menikmati alam</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content Layout: Katalog Event Komersial -->
+    <main class="container catalog-main-container">
+
+      <!-- Modern Filter & Sorting Control Bar (Natural Commercial UI) -->
+      <div class="catalog-control-strip">
+        <div class="catalog-control-left">
+          <h2 class="section-title" data-i18n="catalog_title">Pilihan untuk perjalananmu</h2>
+          <div class="items-status-badge">
+            <span data-i18n="showing_label">Menampilkan</span>
+            <span id="displayedCount" class="font-bold text-primary">16</span>
+            <span data-i18n="of_label">dari</span>
+            <span id="totalCount">16</span>
+            <span data-i18n="events_label">Pilihan Tersedia</span>
+          </div>
+        </div>
+
+        <div class="catalog-control-right">
+          <!-- Quick Search Filter in Catalog -->
+          <div class="catalog-search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" aria-label="Cari di katalog" placeholder="Cari destinasi atau layanan" autocomplete="off">
+            <button type="button" class="btn-clear-search-mini" id="btnResetSearch" title="Reset Pencarian">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <!-- Commercial Sort Dropdown -->
+          <div class="catalog-sort-wrap">
+            <label for="sortCriterion" class="sort-lbl"><i class="fa-solid fa-arrow-down-short-wide text-amber"></i> <span data-i18n="sort_label">Urutkan:</span></label>
+            <select id="sortCriterion" class="select-sort-commercial">
+              <option value="RECOMMENDED">Rekomendasi Terpopuler</option>
+              <option value="PRICE_ASC">Harga terendah</option>
+              <option value="PRICE_DESC">Harga tertinggi</option>
+              <option value="RATING_DESC">Rating tertinggi</option>
+              <option value="KUOTA_DESC">Sisa Kuota Terbanyak</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <section class="algorithm-panel" id="algorithmPanel" aria-labelledby="algorithmPanelTitle">
+        <div class="algorithm-panel-heading">
+          <div>
+            <h3 id="algorithmPanelTitle">Proses sorting &amp; searching</h3>
+            <p>Log dari data katalog yang benar-benar diproses. Jalankan demo atau gunakan pencarian dan urutan harga di atas.</p>
+          </div>
+          <button type="button" class="btn btn-outline btn-sm" id="btnClearInlineLog">Bersihkan log</button>
+        </div>
+        <div class="algorithm-demo-controls">
+          <div class="algorithm-demo-group">
+            <label for="demoSortAlgorithm">Metode sorting</label>
+            <div class="algorithm-demo-row">
+              <select id="demoSortAlgorithm"><option value="BUBBLE">Bubble Sort</option><option value="SELECTION">Selection Sort</option></select>
+              <select id="demoSortCriterion" aria-label="Kriteria demo sorting">
+                <option value="PRICE_ASC">Harga terendah</option><option value="PRICE_DESC">Harga tertinggi</option>
+                <option value="RATING_DESC">Rating tertinggi</option><option value="KUOTA_DESC">Kuota terbanyak</option>
+                <option value="RECOMMENDED">Rekomendasi</option>
+              </select>
+              <button type="button" class="btn btn-primary btn-sm" id="btnDemoSort">Urutkan</button>
+            </div>
+          </div>
+          <div class="algorithm-demo-group">
+            <label for="demoSearchQuery">Linear Search · mengikuti kategori aktif</label>
+            <div class="algorithm-demo-row">
+              <input id="demoSearchQuery" type="search" placeholder="Contoh: Bali atau Garuda">
+              <button type="button" class="btn btn-primary btn-sm" id="btnDemoSearch">Cari</button>
+            </div>
+          </div>
+          <div class="algorithm-demo-group">
+            <label for="demoAlgoSpeed">Kecepatan demo</label>
+            <select id="demoAlgoSpeed"><option value="0">Instan</option><option value="120">Animasi · 120 ms</option><option value="300">Pelan · 300 ms</option></select>
+          </div>
+        </div>
+        <div class="algorithm-status-row">
+          <strong id="inlineAlgorithmStatus" role="status">Siap dijalankan</strong>
+          <span id="inlineAlgorithmStats">0 perbandingan · 0 pertukaran · 0 iterasi</span>
+        </div>
+        <p class="algorithm-scope" id="inlineAlgorithmScope">Sorting mengurutkan seluruh array layanan. Searching memeriksa seluruh array dan mencocokkan kategori aktif.</p>
+        <details class="algorithm-log-details" id="inlineLogDetails" open>
+          <summary>Langkah eksekusi <span id="inlineLogCount">0 langkah</span></summary>
+          <div class="inline-algorithm-log" id="inlineAlgorithmLog" tabindex="0" role="region" aria-label="Langkah eksekusi algoritma">
+            <p class="algorithm-log-empty">Belum ada proses. Pilih metode lalu klik Urutkan, atau masukkan kata kunci lalu klik Cari.</p>
+          </div>
+        </details>
+        <div class="algorithm-data-snapshots">
+          <details><summary>Data sebelum proses</summary><ol id="algorithmBefore"><li>Belum ada proses.</li></ol></details>
+          <details><summary>Hasil proses</summary><ol id="algorithmAfter"><li>Hasil akan muncul setelah proses selesai.</li></ol></details>
+        </div>
+      </section>
+
+      <!-- Katalog layanan -->
+      <div class="catalog-grid" id="catalogGrid">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+
+    </main>
+
+  </div> <!-- End View 1 -->
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 2: PESANAN SAYA (E-TICKET, RESCHEDULE & REFUND) -->
+  <!-- ========================================================================= -->
+  <div class="app-view" id="viewOrders">
+    <div class="container orders-view-container">
+
+      <div class="view-header">
+        <div>
+          <span class="section-sub-badge"><i class="fa-solid fa-ticket"></i> E-Ticket Center</span>
+          <h2 class="view-title" data-i18n="orders_title">Pesanan Saya &amp; Tiket Aktif</h2>
+          <p class="view-desc" data-i18n="orders_desc">Kelola tiket elektronik Anda, unduh boarding pass resmi, lakukan perubahan jadwal (reschedule), atau ajukan pengembalian dana (refund).</p>
+        </div>
+
+        <div class="orders-summary-pills">
+          <div class="stat-pill">
+            <span class="stat-num text-emerald" id="statOrdersActive">0</span>
+            <span class="stat-txt" data-i18n="stat_active_tickets">Tiket Aktif</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-num text-amber" id="statOrdersRescheduled">0</span>
+            <span class="stat-txt" data-i18n="stat_rescheduled">Rescheduled</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-num text-rose" id="statOrdersRefunded">0</span>
+            <span class="stat-txt" data-i18n="stat_refunded">Refunded</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Orders Tab & Search -->
+      <div class="orders-control-bar">
+        <div class="orders-filter-btns">
+          <button class="order-filter-btn active" data-filter="ALL" data-i18n="order_filter_all">Semua Pesanan</button>
+          <button class="order-filter-btn" data-filter="TERBIT" data-i18n="order_filter_active">Tiket Terbit</button>
+          <button class="order-filter-btn" data-filter="RESCHEDULED" data-i18n="order_filter_resched">Rescheduled</button>
+          <button class="order-filter-btn" data-filter="REFUNDED" data-i18n="order_filter_refund">Refunded</button>
+        </div>
+
+        <div class="order-search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="orderSearchInput" placeholder="Cari kode booking, layanan, atau pemesan">
+        </div>
+      </div>
+
+      <!-- Orders List Container -->
+      <div class="orders-list-grid" id="ordersListGrid">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+
+    </div>
+  </div> <!-- End View 2 -->
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 3: DASHBOARD ADMIN (MANAJEMEN DATA) -->
+  <!-- ========================================================================= -->
+  <div class="app-view" id="viewAdmin">
+    <div class="container admin-view-container">
+
+      <div class="view-header">
+        <div>
+          <span class="section-sub-badge"><i class="fa-solid fa-sliders"></i> Panel Kelola Layanan</span>
+          <h2 class="view-title">Dashboard Manajemen Data NusantaraGo</h2>
+          <p class="view-desc">Kelola katalog tiket dan layanan secara dinamis, pantau alokasi data baru, dan kelola seluruh transaksi masuk.</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="btnAdminRefresh">
+          <i class="fa-solid fa-rotate"></i> Segarkan Data
+        </button>
+      </div>
+
+      <!-- Admin Stat Summary Cards -->
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon icon-blue"><i class="fa-solid fa-ticket"></i></div>
+          <div class="admin-stat-info">
+            <span class="stat-title">Total Layanan</span>
+            <h3 class="stat-value" id="adminTotalServices">16</h3>
+            <span class="stat-sub">Item terdaftar dalam katalog</span>
+          </div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon icon-emerald"><i class="fa-solid fa-receipt"></i></div>
+          <div class="admin-stat-info">
+            <span class="stat-title">Total Transaksi Masuk</span>
+            <h3 class="stat-value" id="adminTotalOrders">0</h3>
+            <span class="stat-sub">Pesanan tersimpan dalam sistem</span>
+          </div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon icon-amber"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+          <div class="admin-stat-info">
+            <span class="stat-title">Total Pendapatan</span>
+            <h3 class="stat-value" id="adminTotalRevenue">Rp 0</h3>
+            <span class="stat-sub">Akumulasi pembayaran terverifikasi</span>
+          </div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon icon-purple"><i class="fa-solid fa-chair"></i></div>
+          <div class="admin-stat-info">
+            <span class="stat-title">Total Kuota Tersedia</span>
+            <h3 class="stat-value" id="adminTotalQuota">0</h3>
+            <span class="stat-sub">Tiket / kuota yang belum terjual</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Management Two Column Layout -->
+      <div class="admin-grid-layout">
+        
+        <!-- Left: Form Tambah Layanan Baru -->
+        <div class="admin-card add-service-card">
+          <div class="admin-card-header">
+            <h3><i class="fa-solid fa-plus-circle text-emerald"></i> Tambah Layanan Baru</h3>
+          </div>
+          <form class="admin-form" id="adminAddServiceForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="newKategori"><i class="fa-solid fa-layer-group"></i> Kategori Layanan</label>
+                <select id="newKategori" required>
+                  <option value="PESAWAT">Pesawat</option>
+                  <option value="KERETA">Kereta Api</option>
+                  <option value="BUS">Bus &amp; Travel</option>
+                  <option value="HOTEL">Hotel &amp; Penginapan</option>
+                  <option value="WISATA">Wisata</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="newKelas"><i class="fa-solid fa-crown"></i> Kelas / Kategori Tiket</label>
+                <input type="text" id="newKelas" placeholder="Cth: Ekonomi, Deluxe, Eksekutif" value="Ekonomi" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="newNama"><i class="fa-solid fa-heading"></i> Nama Layanan</label>
+              <input type="text" id="newNama" placeholder="Cth: Garuda Indonesia GA-404" required>
+            </div>
+
+            <div class="form-group">
+              <label for="newLokasi"><i class="fa-solid fa-location-dot"></i> Lokasi / Rute</label>
+              <input type="text" id="newLokasi" placeholder="Cth: Jakarta (CGK) → Bali (DPS)" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="newJadwal"><i class="fa-solid fa-clock"></i> Tanggal &amp; Waktu</label>
+                <input type="text" id="newJadwal" placeholder="Cth: 18 Des 2026 &bull; 19:00 WIB" value="18 Des 2026 • 19:00 WIB" required>
+              </div>
+              <div class="form-group">
+                <label for="newDurasi"><i class="fa-solid fa-hourglass-half"></i> Estimasi Durasi</label>
+                <input type="text" id="newDurasi" placeholder="Cth: 2 jam perjalanan" value="2 jam" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="newHarga"><i class="fa-solid fa-rupiah-sign"></i> Harga Tiket (Rp)</label>
+                <input type="number" id="newHarga" placeholder="Cth: 450000" min="10000" step="5000" required>
+              </div>
+              <div class="form-group">
+                <label for="newKuota"><i class="fa-solid fa-user-check"></i> Kuota Tersedia</label>
+                <input type="number" id="newKuota" placeholder="Cth: 20" min="1" max="500" value="20" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="newRating"><i class="fa-solid fa-star text-amber"></i> Rating</label>
+                <input type="number" id="newRating" placeholder="Cth: 4.9" min="1.0" max="5.0" step="0.1" value="4.9" required>
+              </div>
+              <div class="form-group">
+                <label for="newGambar"><i class="fa-solid fa-image"></i> URL Banner Gambar</label>
+                <input type="url" id="newGambar" placeholder="https://..." value="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=700&auto=format&fit=crop">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-emerald btn-full">
+              <i class="fa-solid fa-circle-plus"></i> Tambahkan ke Katalog NusantaraGo
+            </button>
+          </form>
+        </div>
+
+        <!-- Right: Tabel Transaksi & Refund Approval -->
+        <div class="admin-card admin-table-card">
+          <div class="admin-card-header">
+            <h3><i class="fa-solid fa-table-list text-primary"></i> Tabel Manajemen Transaksi</h3>
+            <span class="badge-tag">Database Pesanan Real-time</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table" id="adminOrdersTable">
+              <thead>
+                <tr>
+                  <th>ID Booking</th>
+                  <th>Pemesan</th>
+                  <th>Layanan</th>
+                  <th>Tanggal</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="adminOrdersTableBody">
+                <tr>
+                  <td colspan="7" class="text-center text-muted" style="padding: 2.5rem;">Belum ada riwayat transaksi pemesanan masuk.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div> <!-- End View 3 -->
+
+  <!-- ========================================================================= -->
+  <!-- FLOATING SYSTEM ACTIVITY LOG DRAWER (DEMO DOSEN & STRUKTUR DATA MONITOR) -->
+  <!-- ========================================================================= -->
+  <!-- Floating Button (Kecil Elegan di Pojok Kanan Bawah) -->
+  <button class="fab-ds-log" id="btnToggleDsLog" title="Buka System Activity Log &amp; Data Structure Monitor">
+    <i class="fa-solid fa-bolt fab-icon"></i>
+    <span class="fab-text">Struktur Data</span>
+    <span class="fab-pulse-dot"></span>
+  </button>
+
+  <!-- Slide-out Drawer Panel -->
+  <div class="ds-drawer-overlay" id="dsLogDrawerOverlay">
+    <aside class="ds-drawer-panel" id="dsLogDrawer">
+      
+      <!-- Drawer Header -->
+      <div class="ds-drawer-header">
+        <div class="ds-drawer-title-wrap">
+          <div class="ds-badge-tag"><i class="fa-solid fa-microchip"></i> DATA STRUCTURE &amp; SYSTEM ENGINE</div>
+          <h3>System Activity &amp; Live Algorithm Log</h3>
+          <p class="ds-drawer-subtitle">Monitor langsung eksekusi Struct, Array of Struct, Pointer, Bubble &amp; Selection Sort, dan Linear Search secara live.</p>
+        </div>
+        <button class="ds-drawer-close-btn" id="btnCloseDsDrawer" title="Tutup Log Panel">&times;</button>
+      </div>
+
+      <!-- Drawer Body -->
+      <div class="ds-drawer-body">
+
+        <!-- Widget 1: Pointer & Memory Inspector -->
+        <div class="panel-card pointer-inspector-card">
+          <div class="panel-header">
+            <div class="panel-title">
+              <i class="fa-solid fa-arrow-pointer text-emerald"></i>
+              <span>Memory &amp; Pointer Inspector (*ptr)</span>
+            </div>
+            <span class="badge-mini badge-live">LIVE MEMORY</span>
+          </div>
+          <div class="pointer-details" id="pointerInspectorContent">
+            <div class="pointer-row">
+              <span class="p-label">Selected Pointer (*ptr):</span>
+              <code class="p-val" id="dispPtrAddress">NULL (0x00000000)</code>
+            </div>
+            <div class="pointer-row">
+              <span class="p-label">Dereferenced Name:</span>
+              <span class="p-val" id="dispPtrName">- Belum ada item dipilih -</span>
+            </div>
+            <div class="pointer-row">
+              <span class="p-label">Dereferenced Price:</span>
+              <span class="p-val font-semibold" id="dispPtrPrice">-</span>
+            </div>
+            <div class="pointer-row">
+              <span class="p-label">Kategori / Kelas:</span>
+              <span class="p-val" id="dispPtrCategory">-</span>
+            </div>
+            <div class="pointer-row">
+              <span class="p-label">Sisa Kuota:</span>
+              <span class="p-val font-semibold text-amber" id="dispPtrQuota">-</span>
+            </div>
+            <div class="pointer-row">
+              <span class="p-label">Active Array Index:</span>
+              <code class="p-val" id="dispPtrIndex">-</code>
+            </div>
+          </div>
+          <div class="pointer-note">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Pointer <code>selectedItemPtr</code> merujuk pada alamat heksadesimal objek yang sedang aktif.</span>
+          </div>
+        </div>
+
+        <!-- Widget 2: Algorithm Control Panel (Testing untuk Dosen) -->
+        <div class="panel-card ds-algo-control-card">
+          <div class="panel-header">
+            <div class="panel-title">
+              <i class="fa-solid fa-sliders text-amber"></i>
+              <span>Manual Algorithm Operations</span>
+            </div>
+            <div class="speed-select-wrap">
+              <label for="algoSpeed"><i class="fa-solid fa-gauge-high"></i></label>
+              <select id="algoSpeed" class="select-mini">
+                <option value="500">500ms</option>
+                <option value="250">250ms</option>
+                <option value="800">800ms</option>
+                <option value="0">0ms (Instan)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ds-algo-body">
+            <!-- Sorting Controls -->
+            <div class="ds-control-unit">
+              <span class="ds-unit-title"><i class="fa-solid fa-arrow-down-short-wide text-amber"></i> Algoritma Sorting O(N²)</span>
+              <div class="ds-controls-flex">
+                <select id="sortAlgorithm" class="select-input">
+                  <option value="BUBBLE">Bubble Sort O(N²)</option>
+                  <option value="SELECTION">Selection Sort O(N²)</option>
+                </select>
+                <button class="btn btn-amber btn-sm" id="btnRunSort">
+                  <i class="fa-solid fa-play"></i> Eksekusi Sort
+                </button>
+              </div>
+            </div>
+
+            <!-- Linear Search Trigger -->
+            <div class="ds-control-unit">
+              <span class="ds-unit-title"><i class="fa-solid fa-magnifying-glass text-primary"></i> Linear Search O(N)</span>
+              <div class="ds-controls-flex">
+                <input type="text" id="drawerSearchInput" class="select-input" placeholder="Cari: Garuda, Padma, Bali...">
+                <button class="btn btn-primary btn-sm" id="btnDrawerSearch">
+                  <i class="fa-solid fa-search"></i> Cari
+                </button>
+              </div>
+            </div>
+
+            <!-- Reset Data Array Button -->
+            <div class="ds-control-unit">
+              <button class="btn btn-secondary btn-sm btn-full" id="btnResetData">
+                <i class="fa-solid fa-rotate-left"></i> Reset Array ke Data Awal
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Widget 3: Live Visual Execution Log Terminal -->
+        <div class="panel-card log-terminal-card">
+          <div class="panel-header">
+            <div class="panel-title">
+              <i class="fa-solid fa-terminal text-primary"></i>
+              <span>Visual Execution Log (Live Steps)</span>
+            </div>
+            <button class="btn-icon" id="btnClearLog" title="Bersihkan Catatan Log">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+
+          <div class="log-meta-bar">
+            <span id="logOperationStatus"><i class="fa-solid fa-circle-dot text-emerald"></i> Sistem Siap</span>
+            <span class="log-step-counter" id="logStepCounter">0 Langkah Tercatat</span>
+          </div>
+
+          <!-- Scrollable Log Container -->
+          <div class="log-stream" id="logStream">
+            <div class="log-welcome">
+              <i class="fa-solid fa-laptop-code welcome-icon"></i>
+              <p><strong>Simulator Log Eksekusi NusantaraGo</strong></p>
+              <p class="text-muted">Setiap aksi sorting, linear search, penukaran pointer (swap), atau pemesanan tiket akan tercatat langkah demi langkah secara real-time di sini.</p>
+            </div>
+          </div>
+
+          <!-- Terminal Footer Stats -->
+          <div class="terminal-footer">
+            <div class="terminal-stat">
+              <span class="stat-lbl">Perbandingan:</span>
+              <strong id="statComparisons">0</strong>
+            </div>
+            <div class="terminal-stat">
+              <span class="stat-lbl">Swap / Match:</span>
+              <strong id="statSwaps">0</strong>
+            </div>
+            <div class="terminal-stat">
+              <span class="stat-lbl">Iterasi:</span>
+              <strong id="statIterations">0</strong>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 1: CHECKOUT PEMESANAN MULTI-STEP (ALUR PEMBAYARAN) -->
+  <!-- ========================================================================= -->
+  <div class="modal-overlay" id="checkoutModalOverlay">
+    <div class="modal-card checkout-modal-card" id="checkoutModalCard">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-cat-tag" id="checkoutModalCatTag">PERJALANAN</span>
+          <h3 id="checkoutModalItemTitle">Detail pesanan</h3>
+        </div>
+        <button class="modal-close-btn" id="btnCheckoutModalClose" title="Tutup Modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Hidden memory notice for pointer reference -->
+        <div class="modal-memory-notice">
+          <i class="fa-solid fa-shield-halved text-emerald"></i>
+          <span data-i18n="modal_verified_notice">Periksa detail perjalanan sebelum memesan.</span>
+          <span id="checkoutModalQuotaNotice" class="text-amber"></span>
+          <span id="checkoutModalPtrAddress" style="display: none;">0x7FFE0010</span>
+        </div>
+
+        <!-- Step Indicator Wizard -->
+        <div class="checkout-steps-nav">
+          <div class="step-nav-item active" data-step="1">
+            <span class="step-num">1</span>
+            <span class="step-text" data-i18n="step_1_buyer">Data Pemesan</span>
+          </div>
+          <div class="step-nav-item" data-step="2">
+            <span class="step-num">2</span>
+            <span class="step-text" data-i18n="step_2_promo">Voucher Diskon</span>
+          </div>
+          <div class="step-nav-item" data-step="3">
+            <span class="step-num">3</span>
+            <span class="step-text" data-i18n="step_3_payment">Pembayaran</span>
+          </div>
+          <div class="step-nav-item" data-step="4">
+            <span class="step-num">4</span>
+            <span class="step-text" data-i18n="step_4_confirm">Konfirmasi</span>
+          </div>
+        </div>
+
+        <!-- Summary Preview Box -->
+        <div class="modal-summary-box">
+          <div class="modal-img-wrap">
+            <img src="" alt="Service preview" id="checkoutModalItemImage">
+          </div>
+          <div class="modal-info-list">
+            <div class="info-row">
+              <span class="info-lbl"><i class="fa-solid fa-location-dot text-rose"></i> Lokasi / Rute:</span>
+              <strong id="checkoutModalItemLocation">-</strong>
+            </div>
+            <div class="info-row">
+              <span class="info-lbl"><i class="fa-solid fa-clock text-amber"></i> Jadwal:</span>
+              <span id="checkoutModalItemSchedule">-</span>
+            </div>
+            <div class="info-row">
+              <span class="info-lbl"><i class="fa-solid fa-star text-amber"></i> Rating:</span>
+              <strong id="checkoutModalItemRating">-</strong>
+            </div>
+            <div class="info-row">
+              <span class="info-lbl"><i class="fa-solid fa-tag text-emerald"></i> Harga Dasar:</span>
+              <strong class="text-primary" id="checkoutModalItemPrice">-</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checkout Wizard Form -->
+        <form id="checkoutForm" onsubmit="return false;">
+
+          <!-- STEP 1: DATA PEMESAN & KELAS TIKET -->
+          <div class="checkout-step-content active" id="checkoutStep1">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="custFullName"><i class="fa-solid fa-user"></i> Nama Lengkap Pemesan</label>
+                <input type="text" id="custFullName" required placeholder="Cth: Muhammad Hanif" value="Muhammad Hanif">
+              </div>
+              <div class="form-group">
+                <label for="custEmail"><i class="fa-solid fa-envelope"></i> Email Penerima E-Ticket</label>
+                <input type="email" id="custEmail" required placeholder="hanif@mhs.unesa.ac.id" value="hanif@mhs.unesa.ac.id">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="custPhone"><i class="fa-solid fa-phone"></i> Nomor WhatsApp / HP</label>
+                <input type="tel" id="custPhone" required placeholder="081234567890" value="081234567890">
+              </div>
+              <div class="form-group">
+                <label for="custNik"><i class="fa-solid fa-id-card"></i> Nomor Identitas (NIK / KTP)</label>
+                <input type="text" id="custNik" required placeholder="3578012345670001" value="3578012345670001">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="custServiceClass"><i class="fa-solid fa-crown text-purple"></i> Kategori / Kelas Tiket</label>
+                <select id="custServiceClass">
+                  <option value="REGULER">Sesuai pilihan layanan</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="custQuantity" id="labelCustQuantity"><i class="fa-solid fa-ticket"></i> Jumlah Tiket</label>
+                <input type="number" id="custQuantity" min="1" max="10" value="1" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="custDate"><i class="fa-solid fa-calendar-day"></i> Tanggal Kunjungan / Keberangkatan</label>
+              <input type="date" id="custDate" required>
+            </div>
+          </div>
+
+          <!-- STEP 2: VOUCHER & DISKON -->
+          <div class="checkout-step-content" id="checkoutStep2">
+            <div class="promo-input-box">
+              <label for="inputPromoCode"><i class="fa-solid fa-ticket-simple text-amber"></i> Masukkan Kode Promo / Voucher</label>
+              <div class="promo-input-group">
+                <input type="text" id="inputPromoCode" placeholder="Cth: NUSANTARA50" autocomplete="off">
+                <button type="button" class="btn btn-amber" id="btnApplyPromo">
+                  <i class="fa-solid fa-check"></i> Terapkan
+                </button>
+              </div>
+              <div id="promoValidationFeedback" class="promo-feedback"></div>
+            </div>
+
+            <div class="quick-promo-section">
+              <span class="quick-promo-title"><i class="fa-solid fa-bolt text-amber"></i> Klik untuk gunakan promo yang tersedia:</span>
+              <div class="quick-promo-chips" id="quickPromoChips">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <div class="promo-summary-card" id="promoSummaryCard">
+              <div class="info-row">
+                <span>Status Voucher:</span>
+                <strong id="promoStatusTxt" class="text-muted">Belum ada promo diterapkan</strong>
+              </div>
+              <div class="info-row">
+                <span>Potongan Diskon:</span>
+                <strong id="promoDiscountTxt" class="text-emerald">Rp 0</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 3: METODE PEMBAYARAN -->
+          <div class="checkout-step-content" id="checkoutStep3">
+            <label class="form-section-label"><i class="fa-solid fa-wallet text-emerald"></i> Pilih Saluran Pembayaran Resmi</label>
+
+            <div class="payment-options-grid">
+              <label class="payment-option-card active">
+                <input type="radio" name="paymentMethod" value="QRIS" checked>
+                <div class="payment-option-content">
+                  <div class="payment-icon icon-emerald"><i class="fa-solid fa-qrcode"></i></div>
+                  <div class="payment-details">
+                    <strong>QRIS Instan (Semua E-Wallet)</strong>
+                    <span>GoPay, OVO, Dana, ShopeePay, BCA Mobile</span>
+                  </div>
+                </div>
+              </label>
+
+              <label class="payment-option-card">
+                <input type="radio" name="paymentMethod" value="BCA Virtual Account">
+                <div class="payment-option-content">
+                  <div class="payment-icon icon-blue"><i class="fa-solid fa-building-columns"></i></div>
+                  <div class="payment-details">
+                    <strong>BCA Virtual Account</strong>
+                    <span>Verifikasi pembayaran otomatis 24 Jam</span>
+                  </div>
+                </div>
+              </label>
+
+              <label class="payment-option-card">
+                <input type="radio" name="paymentMethod" value="Mandiri Virtual Account">
+                <div class="payment-option-content">
+                  <div class="payment-icon icon-amber"><i class="fa-solid fa-credit-card"></i></div>
+                  <div class="payment-details">
+                    <strong>Mandiri Virtual Account</strong>
+                    <span>Livin' by Mandiri &amp; ATM Mandiri</span>
+                  </div>
+                </div>
+              </label>
+
+              <label class="payment-option-card">
+                <input type="radio" name="paymentMethod" value="Transfer Bank BNI / BRI">
+                <div class="payment-option-content">
+                  <div class="payment-icon icon-purple"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                  <div class="payment-details">
+                    <strong>Transfer Bank BRI / BNI</strong>
+                    <span>Konfirmasi bukti transfer real-time</span>
+                  </div>
+                </div>
+              </label>
+            </div>
+
+            <!-- Dynamic Payment Simulation Info Box -->
+            <div class="payment-preview-box" id="paymentPreviewBox">
+              <div class="qris-preview-wrap" id="qrisPreviewWrap">
+                <div class="qris-box">
+                  <svg class="qris-qr-code" viewBox="0 0 100 100" width="100" height="100">
+                    <rect width="100" height="100" fill="#ffffff" rx="8" />
+                    <rect x="10" y="10" width="24" height="24" fill="#0b0f19" rx="2" />
+                    <rect x="14" y="14" width="16" height="16" fill="#ffffff" />
+                    <rect x="18" y="18" width="8" height="8" fill="#0b0f19" />
+
+                    <rect x="66" y="10" width="24" height="24" fill="#0b0f19" rx="2" />
+                    <rect x="70" y="14" width="16" height="16" fill="#ffffff" />
+                    <rect x="74" y="18" width="8" height="8" fill="#0b0f19" />
+
+                    <rect x="10" y="66" width="24" height="24" fill="#0b0f19" rx="2" />
+                    <rect x="14" y="70" width="16" height="16" fill="#ffffff" />
+                    <rect x="18" y="74" width="8" height="8" fill="#0b0f19" />
+
+                    <rect x="42" y="16" width="6" height="6" fill="#0b0f19" />
+                    <rect x="52" y="24" width="6" height="6" fill="#0b0f19" />
+                    <rect x="42" y="44" width="16" height="16" fill="#2563eb" rx="2" />
+                    <rect x="20" y="44" width="6" height="6" fill="#0b0f19" />
+                    <rect x="70" y="44" width="6" height="6" fill="#0b0f19" />
+                    <rect x="44" y="70" width="6" height="6" fill="#0b0f19" />
+                    <rect x="56" y="80" width="6" height="6" fill="#0b0f19" />
+                    <rect x="76" y="74" width="6" height="6" fill="#0b0f19" />
+                  </svg>
+                  <div class="qris-info">
+                    <strong>NusantaraGo QRIS Merchant Resmi</strong>
+                    <span class="text-muted">NMID: ID102026884920</span>
+                    <span class="badge-tag">Bebas Biaya Admin &bull; Proses Instan</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 4: RINGKASAN & KONFIRMASI -->
+          <div class="checkout-step-content" id="checkoutStep4">
+            <div class="order-summary-breakdown">
+              <h4 class="summary-breakdown-title"><i class="fa-solid fa-receipt text-primary"></i> Rincian Pembayaran Akhir</h4>
+              
+              <div class="breakdown-row">
+                <span>Nama Pemesan:</span>
+                <strong id="sumCustName">-</strong>
+              </div>
+              <div class="breakdown-row">
+                <span>Kontak &amp; NIK:</span>
+                <span id="sumCustContact">-</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Layanan:</span>
+                <strong id="sumServiceName">-</strong>
+              </div>
+              <div class="breakdown-row">
+                <span>Tanggal perjalanan:</span>
+                <span id="sumScheduleDate">-</span>
+              </div>
+              <div class="breakdown-divider"></div>
+
+              <div class="breakdown-row">
+                <span>Harga Dasar x Jumlah:</span>
+                <span id="sumBaseTotal">Rp 0</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Penyesuaian Kategori:</span>
+                <span id="sumClassAdjustment" class="text-amber">+ Rp 0</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Diskon Kode Promo:</span>
+                <span id="sumPromoDiscount" class="text-emerald">- Rp 0</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Biaya Layanan &amp; Pajak:</span>
+                <span class="text-emerald">GRATIS (Rp 0)</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Metode Pembayaran:</span>
+                <strong id="sumPaymentMethod">QRIS</strong>
+              </div>
+
+              <div class="breakdown-divider"></div>
+              <div class="breakdown-total-row">
+                <span>Total Akhir Pembayaran:</span>
+                <strong class="text-emerald" id="sumFinalTotal">Rp 0</strong>
+              </div>
+            </div>
+
+            <div class="terms-agreement-box">
+              <label>
+                <input type="checkbox" id="checkAgreeTerms" checked>
+                <span>Saya menyetujui syarat &amp; ketentuan pemesanan tiket resmi, kebijakan perubahan jadwal (reschedule), dan pengembalian dana (refund) NusantaraGo.</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Wizard Actions Navigation Buttons -->
+          <div class="modal-wizard-actions">
+            <button type="button" class="btn btn-outline" id="btnWizardPrev" style="display: none;">
+              <i class="fa-solid fa-arrow-left"></i> Sebelumnya
+            </button>
+            <div class="wizard-right-actions">
+              <button type="button" class="btn btn-secondary" id="btnCancelCheckout">Batal</button>
+              <button type="button" class="btn btn-primary" id="btnWizardNext">
+                Lanjut <i class="fa-solid fa-arrow-right"></i>
+              </button>
+              <button type="button" class="btn btn-emerald" id="btnConfirmPayment" style="display: none;">
+                <i class="fa-solid fa-lock"></i> Bayar Sekarang (<span id="btnPayAmount">Rp 0</span>)
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 2: E-TICKET BOARDING PASS PREVIEW & PRINT -->
+  <!-- ========================================================================= -->
+  <div class="modal-overlay" id="ticketModalOverlay">
+    <div class="modal-card ticket-modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-cat-tag"><i class="fa-solid fa-ticket"></i> E-TICKET RESMI</span>
+          <h3>Tiket Elektronik NusantaraGo</h3>
+        </div>
+        <button class="modal-close-btn" id="btnTicketModalClose">&times;</button>
+      </div>
+
+      <div class="modal-body ticket-modal-body">
+        <!-- Printable Boarding Pass Container -->
+        <div class="printable-ticket" id="printableTicketArea">
+          <!-- Ticket Header -->
+          <div class="ticket-header-band">
+            <div class="ticket-brand">
+              <i class="fa-solid fa-compass"></i>
+              <span>Nusantara<strong>Go</strong> Pass</span>
+            </div>
+            <div class="ticket-badge-status" id="ticketBadgeStatus">
+              TERBIT &bull; LUNAS
+            </div>
+          </div>
+
+          <!-- Ticket Main Body -->
+          <div class="ticket-content-body">
+            <div class="ticket-meta-grid">
+              <div class="ticket-col">
+                <span class="t-lbl">KODE BOOKING</span>
+                <h2 class="t-booking-code" id="ticketBookingCode">NTG-88219A</h2>
+              </div>
+              <div class="ticket-col text-right">
+                <span class="t-lbl">NOMOR TIKET</span>
+                <code class="t-mem-addr" id="ticketMemAddress">NTG-PASS-2026</code>
+              </div>
+            </div>
+
+            <div class="ticket-route-box">
+              <div class="route-origin">
+                <span class="t-lbl">NAMA ACARA / LAYANAN</span>
+                <h4 id="ticketServiceName">Detail perjalanan</h4>
+                <span class="t-sub" id="ticketCategoryClass">Layanan pilihan</span>
+              </div>
+              <div class="route-arrow">
+                <i class="fa-solid fa-ticket" id="ticketRouteIcon"></i>
+              </div>
+              <div class="route-dest text-right">
+                <span class="t-lbl">VENUE / LOKASI</span>
+                <h4 id="ticketRouteText">Gelora Bung Karno (GBK), Jakarta</h4>
+                <span class="t-sub" id="ticketScheduleText">15 Nov 2026 &bull; 19:30 WIB</span>
+              </div>
+            </div>
+
+            <div class="ticket-details-grid">
+              <div class="t-detail-item">
+                <span class="t-lbl">NAMA PEMESAN</span>
+                <strong id="ticketPassengerName">Muhammad Hanif</strong>
+              </div>
+              <div class="t-detail-item">
+                <span class="t-lbl">NOMOR IDENTITAS (NIK)</span>
+                <strong id="ticketNik">3578012345670001</strong>
+              </div>
+              <div class="t-detail-item">
+                <span class="t-lbl">TANGGAL PELAKSANAAN</span>
+                <strong id="ticketTravelDate">15 November 2026</strong>
+              </div>
+              <div class="t-detail-item">
+                <span class="t-lbl">JUMLAH TIKET</span>
+                <strong id="ticketQuantity">1 Tiket</strong>
+              </div>
+              <div class="t-detail-item">
+                <span class="t-lbl">METODE BAYAR</span>
+                <strong id="ticketPaymentMethod">QRIS Instan</strong>
+              </div>
+              <div class="t-detail-item">
+                <span class="t-lbl">TOTAL PEMBAYARAN</span>
+                <strong class="text-emerald" id="ticketTotalAmount">Rp 1.750.000</strong>
+              </div>
+            </div>
+
+            <!-- Barcode & QR Code Section -->
+            <div class="ticket-barcode-band">
+              <div class="barcode-visual">
+                <div class="barcode-lines"></div>
+                <span class="barcode-num" id="ticketBarcodeNumber">NTG88219A94820194820</span>
+              </div>
+              <div class="ticket-qr-wrap">
+                <svg class="ticket-qr" viewBox="0 0 100 100" width="80" height="80">
+                  <rect width="100" height="100" fill="#ffffff" rx="6" />
+                  <rect x="10" y="10" width="24" height="24" fill="#000" />
+                  <rect x="14" y="14" width="16" height="16" fill="#fff" />
+                  <rect x="18" y="18" width="8" height="8" fill="#000" />
+                  <rect x="66" y="10" width="24" height="24" fill="#000" />
+                  <rect x="70" y="14" width="16" height="16" fill="#fff" />
+                  <rect x="74" y="18" width="8" height="8" fill="#000" />
+                  <rect x="10" y="66" width="24" height="24" fill="#000" />
+                  <rect x="14" y="70" width="16" height="16" fill="#fff" />
+                  <rect x="18" y="74" width="8" height="8" fill="#000" />
+                  <rect x="42" y="42" width="16" height="16" fill="#000" />
+                  <rect x="42" y="16" width="8" height="8" fill="#000" />
+                  <rect x="72" y="44" width="8" height="8" fill="#000" />
+                  <rect x="16" y="44" width="8" height="8" fill="#000" />
+                  <rect x="46" y="72" width="8" height="8" fill="#000" />
+                  <rect x="72" y="72" width="8" height="8" fill="#000" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ticket Modal Action Buttons -->
+        <div class="ticket-actions-bar">
+          <button class="btn btn-primary" id="btnPrintTicket">
+            <i class="fa-solid fa-print"></i> Cetak / Unduh Tiket (PDF)
+          </button>
+          <button class="btn btn-secondary" id="btnCloseTicketModal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 3: RESCHEDULE JADWAL TIKET -->
+  <!-- ========================================================================= -->
+  <div class="modal-overlay" id="rescheduleModalOverlay">
+    <div class="modal-card reschedule-modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-cat-tag"><i class="fa-solid fa-calendar-week"></i> RESCHEDULE TIKET</span>
+          <h3>Ubah Tanggal Perjalanan</h3>
+        </div>
+        <button class="modal-close-btn" id="btnRescheduleModalClose">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="reschedule-info-box">
+          <div class="info-row">
+            <span>Kode Booking:</span>
+            <strong id="rescheduleBookingCode">NTG-XXXXX</strong>
+          </div>
+          <div class="info-row">
+            <span>Nama layanan:</span>
+            <strong id="rescheduleServiceName">-</strong>
+          </div>
+          <div class="info-row">
+            <span>Tanggal Saat Ini:</span>
+            <span id="rescheduleCurrentDate" class="text-rose font-semibold">-</span>
+          </div>
+        </div>
+
+        <form id="rescheduleForm" onsubmit="return false;">
+          <div class="form-group">
+            <label for="newTravelDate"><i class="fa-solid fa-calendar-day text-primary"></i> Pilih Tanggal Baru</label>
+            <input type="date" id="newTravelDate" required>
+          </div>
+
+          <div class="reschedule-note">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Perubahan tanggal jadwal tidak dikenakan biaya tambahan apabila kuota pada tanggal baru masih tersedia.</span>
+          </div>
+
+          <!-- Hidden pointer tracking element -->
+          <span id="rescheduleModalPtr" style="display: none;"></span>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-outline" id="btnCancelReschedule">Batal</button>
+            <button type="submit" class="btn btn-amber" id="btnConfirmReschedule">
+              <i class="fa-solid fa-calendar-check"></i> Konfirmasi Perubahan Jadwal
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 4: AJUKAN REFUND TIKET -->
+  <!-- ========================================================================= -->
+  <div class="modal-overlay" id="refundModalOverlay">
+    <div class="modal-card refund-modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-cat-tag text-rose"><i class="fa-solid fa-hand-holding-dollar"></i> PENGAJUAN REFUND</span>
+          <h3>Pembatalan &amp; Pengembalian Dana</h3>
+        </div>
+        <button class="modal-close-btn" id="btnRefundModalClose">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="refund-warning-box">
+          <i class="fa-solid fa-triangle-exclamation warning-icon"></i>
+          <div>
+            <strong>Konfirmasi Pembatalan Tiket</strong>
+            <p>Tiket dengan Kode Booking <code id="refundBookingCode">NTG-XXXXX</code> akan dibatalkan permanen dan dana sebesar <strong class="text-emerald" id="refundAmount">Rp 0</strong> akan dikembalikan ke metode pembayaran awal.</p>
+          </div>
+        </div>
+
+        <!-- Hidden quota tracker -->
+        <span id="refundQuotaReturn" style="display: none;">1</span>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" id="btnCancelRefund">Kembali</button>
+          <button type="button" class="btn btn-rose" id="btnConfirmRefund">
+            <i class="fa-solid fa-money-bill-transfer"></i> Setujui &amp; Kembalikan Kuota
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 5: LOGIN & REGISTER AUTH MODAL -->
+  <!-- ========================================================================= -->
+  <div class="modal-overlay" id="authModalOverlay">
+    <div class="modal-card auth-modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-cat-tag"><i class="fa-solid fa-user-lock"></i> <span data-i18n="auth_modal_tag">AKUN NUSANTARAGO</span></span>
+          <h3 id="authModalTitle" data-i18n="auth_login_title">Masuk ke Akun Anda</h3>
+        </div>
+        <button class="modal-close-btn" id="btnAuthModalClose">&times;</button>
+      </div>
+
+      <div class="modal-body auth-modal-body">
+        <div class="auth-tabs-nav">
+          <button class="auth-tab-btn active" id="authTabLogin" data-i18n="auth_tab_login">Masuk (Login)</button>
+          <button class="auth-tab-btn" id="authTabRegister" data-i18n="auth_tab_register">Daftar Akun Baru</button>
+        </div>
+
+        <!-- Form Login -->
+        <form id="authLoginForm" onsubmit="return false;">
+          <div class="form-group">
+            <label for="loginEmail"><i class="fa-solid fa-envelope"></i> <span data-i18n="auth_email_lbl">Alamat Email</span></label>
+            <input type="email" id="loginEmail" placeholder="contoh: hanif@mhs.unesa.ac.id" value="hanif@mhs.unesa.ac.id" required>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword"><i class="fa-solid fa-lock"></i> <span data-i18n="auth_pwd_lbl">Kata Sandi (Password)</span></label>
+            <input type="password" id="loginPassword" placeholder="Masukkan kata sandi" value="unesa123" required>
+          </div>
+          <button type="submit" class="btn btn-tiket-blue btn-full" id="btnSubmitLogin" style="margin-top: 10px;">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> <span data-i18n="auth_btn_login">Masuk Sekarang</span>
+          </button>
+        </form>
+
+        <!-- Form Register -->
+        <form id="authRegisterForm" style="display: none;" onsubmit="return false;">
+          <div class="form-group">
+            <label for="regFullName"><i class="fa-solid fa-user"></i> <span data-i18n="auth_name_lbl">Nama Lengkap</span></label>
+            <input type="text" id="regFullName" placeholder="Nama lengkap Anda" required>
+          </div>
+          <div class="form-group">
+            <label for="regEmail"><i class="fa-solid fa-envelope"></i> <span data-i18n="auth_email_lbl">Alamat Email</span></label>
+            <input type="email" id="regEmail" placeholder="nama@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="regPassword"><i class="fa-solid fa-lock"></i> <span data-i18n="auth_new_pwd_lbl">Kata Sandi Baru</span></label>
+            <input type="password" id="regPassword" placeholder="Minimal 6 karakter" required>
+          </div>
+          <button type="submit" class="btn btn-emerald btn-full" id="btnSubmitRegister" style="margin-top: 10px;">
+            <i class="fa-solid fa-user-plus"></i> <span data-i18n="auth_btn_register">Buat Akun Baru</span>
+          </button>
+        </form>
+
+        <div class="auth-modal-footer">
+          <i class="fa-solid fa-shield-check text-emerald"></i>
+          <span data-i18n="auth_footer_note">Data akun tersimpan aman di runtime browser NusantaraGo.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- ========================================================================= -->
+  <!-- FOOTER KOMERSIAL ELEGAN -->
+  <!-- ========================================================================= -->
+  <footer class="app-footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <i class="fa-solid fa-ticket-simple"></i> NusantaraGo
+        </div>
+        <p>Tiket perjalanan, tempat menginap, dan pengalaman baru. Semua berawal dari satu rencana kecil.</p>
+      </div>
+
+      <div class="footer-links-group">
+        <div class="footer-col">
+          <strong>Rencanakan perjalanan</strong>
+          <a href="#" onclick="switchCategoryFilter('PESAWAT'); return false;">Tiket Pesawat</a>
+          <a href="#" onclick="switchCategoryFilter('HOTEL'); return false;">Hotel &amp; Penginapan</a>
+          <a href="#" onclick="switchCategoryFilter('KERETA'); return false;">Kereta Api</a>
+          <a href="#" onclick="switchCategoryFilter('BUS'); return false;">Bus &amp; Travel</a>
+          <a href="#" onclick="switchCategoryFilter('WISATA'); return false;">Wisata</a>
+        </div>
+        <div class="footer-col">
+          <strong>Bantuan &amp; Panduan</strong>
+          <a href="#promoSection">Promo Spesial</a>
+          <a href="#" onclick="switchView('orders'); return false;">Cek E-Ticket Saya</a>
+          <a href="#" onclick="switchView('admin'); return false;">Panel Manajemen Layanan</a>
+          <a href="#" onclick="switchCategoryFilter('ALL'); return false;" data-i18n="footer_all_events">Semua perjalanan</a>
+        </div>
+      </div>
+
+      <div class="footer-meta">
+        <p>NusantaraGo &copy; 2026</p>
+        <p class="text-muted" style="font-size: 0.8rem; margin-top: 4px;">Proyek Struktur Data &bull; UNESA &bull; Data dan pemesanan simulasi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js?v=20261027"></script>
+</body>
+</html>
